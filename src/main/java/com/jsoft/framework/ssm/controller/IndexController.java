@@ -57,16 +57,16 @@ public class IndexController {
             userDO.setUserEmail("easonjim@163.com");
             userDO.setUserName("jim");
             userDO.setUserPhone("13800138000");
-            userDO.setUserPwd("123456");
+            userDO.setUserPwd("woaini");
             userDO.setUserSex((short) 0);
             Boolean saveUser = userService.saveUser(userDO);
             logger.info("新增用户：{}", userDO.getId());
             UserDO user = userService.getUser(userDO.getId());
             logger.info("获取一个用户：{}", user);
-            
+
             User tmpUser = userService.getUser2(userDO.getId());
             logger.info("基于注解方式获取一个用户:{}", tmpUser);
-            
+
             user.setUserPwd("654321");
             Boolean updateUser = userService.updateUser(user);
             UserDO user1 = userService.getUser(userDO.getId());

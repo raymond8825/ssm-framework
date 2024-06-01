@@ -18,7 +18,7 @@ public class ScheduleJob {
      * 定时任务执行
      * XML方式
      */
-    public void runJob(){
+    public void runJob() {
         log.info("XML定时任务执行：{}", System.currentTimeMillis());
     }
 
@@ -28,7 +28,7 @@ public class ScheduleJob {
      * 每5秒执行一次
      */
     @Scheduled(cron = "0/5 * * * * *")
-    public void runJob2(){
+    public void runJob2() {
         log.info("注解定时任务执行：{}", System.currentTimeMillis());
     }
 }
