@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/data/elasticsearch http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <!--<elasticsearch:transport-client id="client" cluster-nodes="${jd.trip.hotel.es.config.clusterNodes}" cluster-name="${jd.trip.hotel.es.config.clusterName}" />-->
+
+    <bean id="esClient" class="com.jsoft.framework.ssm.es.CustomTransportClientFactoryBean">
+        <property name="clusterName" value="jiesi-6.3"/>
+        <property name="clusterNodes" value="11.159.97.16:40000,11.158.103.55:20000,11.158.103.54:20000"/>
+        <property name="clientTransportSniff" value="false"/>
+        <property name="securityUser" value="jiesi-6.3"/>
+        <property name="securityPassword" value="A5F4B854D85E052C9BA3C3EC051BFDFBF7952167"/>
+    </bean>
+
+    <bean name="es" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg name="client" ref="esClient"/>
+    </bean>
+</beans>
+        <!--        用户名-->
+        <!--        jiesi-6.3-->
+        <!--        密码-->
+        <!--        A5F4B854D85E052C9BA3C3EC051BFDFBF7952167-->
+        <!--        业务使用节点HTTP协议-->
+        <!--        11.159.97.16:40000;11.158.103.55:20000;11.158.103.54:20000;-->
+        <!--        业务使用节点TCP协议-->
+        <!--        11.159.97.16:40100;11.158.103.55:20100;11.158.103.54:20100;-->

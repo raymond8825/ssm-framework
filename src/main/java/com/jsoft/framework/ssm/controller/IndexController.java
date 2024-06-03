@@ -2,20 +2,29 @@ package com.jsoft.framework.ssm.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.github.pagehelper.PageInfo;
 import com.jsoft.framework.ssm.model.sys.user.UserDO;
 import com.jsoft.framework.ssm.model.sys.user2.User;
 import com.jsoft.framework.ssm.service.sys.user.UserService;
 
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
 
 /**
  * Index Controller
@@ -28,6 +37,9 @@ public class IndexController {
 
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
+    @Resource(name = "es")
+    private ElasticsearchTemplate esTemplate;
+
     @Autowired
     private UserService userService;
 
@@ -37,6 +49,19 @@ public class IndexController {
         ModelAndView index = new ModelAndView("index");
         index.addObject("message", "hello world");
         return index;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/es")
+    @ResponseBody
+    public String testES() {
+        logger.info("访问es");
+        User user = new User();
+        user.setUserName("lllllll");
+        UpdateRequestBuilder urb = esTemplate.getClient().prepareUpdate("user_index", "user", UUID.randomUUID().toString())
+                .setDoc(user, XContentType.JSON).setDocAsUpsert(true);
+        UpdateResponse updateResponse = urb.execute().actionGet();
+        System.out.println(updateResponse);
+        return "es done";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/hello")
